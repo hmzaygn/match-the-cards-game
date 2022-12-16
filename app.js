@@ -4,6 +4,8 @@ const container = document.querySelector(".container");
 let score = 0;
 let moves = document.querySelector(".moves");
 const restart = document.querySelector("button");
+const winMsg = document.querySelector("h2");
+const bestScore = document.querySelector("h3 span");
 
 start();
 
@@ -12,11 +14,13 @@ restart.addEventListener("click", () => {
   document.body.style.backgroundColor = "aquamarine";
   score = 0;
   moves.textContent = 0;
+  winMsg.style.display = "none";
   start();
 });
 
 function start() {
   restart.disabled = true;
+  bestScore.textContent = JSON.parse(localStorage?.getItem("bestScore")) || 0;
   data
     .sort(() => Math.random() - 0.5)
     .forEach((item) => {
@@ -38,12 +42,12 @@ function start() {
       card.addEventListener("click", (e) => {
         card.classList.toggle("toggle-card");
 
-        clickedCard(e);
+        checkCards(e);
       });
     });
 }
 
-const clickedCard = (e) => {
+const checkCards = (e) => {
   const clickedCards = e.target;
   clickedCards.classList.add("flipped");
   const flippedCards = document.querySelectorAll(".flipped");
@@ -73,5 +77,8 @@ const clickedCard = (e) => {
     console.log("win");
     document.body.style.backgroundColor = "lightgreen";
     restart.disabled = false;
+    winMsg.style.display = "inline";
+    bestScore.textContent = score;
+    localStorage.setItem("bestScore", score);
   }
 };
