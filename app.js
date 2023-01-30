@@ -73,12 +73,17 @@ const checkCards = (e) => {
     moves.textContent = score;
   }
 
+  const localBestScore = JSON.parse(localStorage?.getItem("bestScore"));
+
   if (matchedCards.length === 12) {
     console.log("win");
     document.body.style.backgroundColor = "lightgreen";
     restart.disabled = false;
     winMsg.style.display = "inline";
-    bestScore.textContent = score;
-    localStorage.setItem("bestScore", score);
+
+    if (score < localBestScore) {
+      localStorage.setItem("bestScore", score);
+      bestScore.textContent = score;
+    }
   }
 };
